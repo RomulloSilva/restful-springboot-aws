@@ -47,7 +47,7 @@ public class RequestService {
 	//Chamada do método list.
 	public List<Request> listAll(){
 		List<Request> requests = requestRepository.findAll();
-		return request;
+		return requests;
 	}
 	
 	
