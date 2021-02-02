@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springcourse.domain.Request;
 import com.springcourse.domain.User;
 import com.springcourse.dto.UserLoginDto;
+import com.springcourse.service.RequestService;
 import com.springcourse.service.UserService;
 
 @RestController
@@ -22,6 +24,7 @@ import com.springcourse.service.UserService;
 public class UserResource {
 	
 	@Autowired private UserService userService;
+	@Autowired private RequestService requestService;
 	
 	//SAVE
 	@PostMapping
@@ -35,7 +38,7 @@ public class UserResource {
 	
 	//UPDATE
 	@PutMapping("/id")
-	public ResponseEntity<User> update (@PathVariable (name = "id") Lond id, @RequestBody User user){
+	public ResponseEntity<User> update (@PathVariable (name = "id") Long id, @RequestBody User user){
 		user.setId(id);
 		User updatedUser = userService.update(user);
 		return ResponseEntity.ok(updatedUser);
@@ -71,6 +74,14 @@ public class UserResource {
 		User loggedUser = userService.login(user.getEmail(), user.getPassword());
 		return ResponseEntity.ok(loggedUser);
 		
+	}
+	
+	
+	//LIST ALL BY OWNER ID
+	@GetMapping("/{id}/requests")
+	public ResponseEntity<List<Request>> ListAllRequestsById(@PathVariable(name = "id")Long id){
+		List<Request> requests = requestService.listAllByOwnerId(id);
+		return ResponseEntity.ok(requests);
 	}
 
 }
